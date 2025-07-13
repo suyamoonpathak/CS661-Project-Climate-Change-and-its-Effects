@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bird Migration Dashboard</title>
+
+  <!-- Styles -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="heatmap.css" />
+<link rel="stylesheet" href="main.css" />
+ 
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">🕊️ Bird Migration Dashboard</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="#heatmapContainer">Heatmap</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#sunburstContainer">Sunburst</a>
+    </li>
+  </ul>
+</div>
+
+      
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Section 1: Heatmap -->
+  <section id="heatmapSection">
+    
+    <div class="selectors">
+      <label for="speciesDropdown">Species:</label>
+      <select id="speciesDropdown"></select>
+
+      <label for="continentDropdown">Continent:</label>
+      <select id="continentDropdown"></select>
+
+      <label for="xAxisSelect">X Axis:</label>
+      <select id="xAxisSelect">
+        <option value="Temperature">Temperature</option>
+        <option value="Humidity">Humidity</option>
+        <option value="WindSpeed">WindSpeed</option>
+        <option value="Pressure">Pressure</option>
+      </select>
+
+      <label for="yAxisSelect">Y Axis:</label>
+      <select id="yAxisSelect">
+        <option value="Humidity">Humidity</option>
+        <option value="Temperature">Temperature</option>
+        <option value="WindSpeed">WindSpeed</option>
+        <option value="Pressure">Pressure</option>
+      </select>
+    </div>
+
+</section>
+
+  <section id="main">
+    <div class="main">
+      
+      <div id="heatmapContainer"></div>
+      
+      <div id="radarChart" class="radarChart"></div>
+    
+       <div id="controls"></div>
+    </div>
+   
+      
+  </section>
+
+  <!-- Section 2: Sunburst -->
+  <section id="sunburstSection">
+    
+    <div class="container3"></div>
+    <h2> Migration Reasons</h2>
+    <div id="sunburstContainer"></div>
+  </section>
+
+  <!-- Scripts -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/topojson.v3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="heatmap.js"></script>
+  <script src="sunburst.js"></script>
+  <script src="radarChart1.js"></script>
+  <!-- <script src="radar_module.js"></script> -->
+</body>
+</html>
