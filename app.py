@@ -14,30 +14,30 @@ st.sidebar.title("Select App")
 app_choice = st.sidebar.radio(
     "",
     (
-        "Chaitanya's App",
-        "Kameshwor's App",
-        "Imran's App",
-        "Garvit's App",
-        "Suyamoon's App",
-        "Insha's App",     
-        "Kirandeep's App",
-        "Anirban's App",
+        "Chaitanya's Task",
+        "Kameshwor's Task",
+        "Imran's Task",
+        "Vijiyant and Garvit's Task",
+        "Suyamoon's Task",
+        "Insha's Task",     
+        "Kirandeep's Task",
+        "Anirban's Task",
     )
 )
 
 # Map app names to their run functions
 app_cases = {
-    "Imran's App": imran_climate_trends.run,
-    "Suyamoon's App": suyamoon_bird_migration.run,
-    "Chaitanya's App": chaitanya.run,
-    "Anirban's App": anirban.run,
-    "Garvit's App": garvit.run,
-    "Kirandeep's App": kirandeep.run,
-    "Kameshwor's App": kameshwor.run
+    "Imran's Task": imran_climate_trends.run,
+    "Suyamoon's Task": suyamoon_bird_migration.run,
+    "Chaitanya's Task": chaitanya.run,
+    "Anirban's Task": anirban.run,
+    "Vijiyant and Garvit's Task": garvit.run,
+    "Kirandeep's Task": kirandeep.run,
+    "Kameshwor's Task": kameshwor.run
     # Add more mappings here as needed
 }
 
-if app_choice == "Insha's App":
+if app_choice == "Insha's Task":
     # Option 1: Open in a new tab (recommended)
     st.markdown(
         """

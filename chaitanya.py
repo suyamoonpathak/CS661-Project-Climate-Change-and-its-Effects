@@ -27,33 +27,7 @@ def run():
         
     ])
 
-    latest_year = data["Year"].max()
-    year_data = data[data["Year"] == latest_year]
-
-    scatter_data = year_data.dropna(
-        subset=[
-            'Avg Temperature (°C)',
-            'CO2 Emissions (Tons/Capita)',
-            'Sea Level Rise (mm)',
-            'Extreme Weather Events',
-            'Population'
-        ]
-    )
-
-    grouped = scatter_data.copy()
-    grouped['Weighted CO2'] = grouped['CO2 Emissions (Tons/Capita)'] * grouped['Population']
-
-    agg_data = grouped.groupby("Country").agg({
-        'Avg Temperature (°C)': 'mean',
-        'Weighted CO2': 'sum',
-        'Population': 'sum',
-        'Sea Level Rise (mm)': 'max',
-        'Extreme Weather Events': 'max'
-    }).reset_index()
-
-    agg_data['CO2 Emissions (Tons/Capita)'] = agg_data['Weighted CO2'] / agg_data['Population']
-    final_data = agg_data.drop(columns=['Weighted CO2'])
-
+    
     with tab1:
         st.subheader("Global Emissions and Temperature Over Time")
         st.markdown(
@@ -180,7 +154,7 @@ def run():
     with tab3:
         st.subheader("Forest Area vs CO₂ Emissions by Year")
         st.markdown(
-            "Examining the relationship between forest coverage and carbon emissions across countries and years."
+            "Examining the relationship between forest coverage, carbon emissions, and temperature across countries and years."
         )
 
         forest_data = data.dropna(subset=[
@@ -188,24 +162,31 @@ def run():
             'CO2 Emissions (Tons/Capita)',
             'Population',
             'Year',
-            'Country'
+            'Country',
+            'Avg Temperature (°C)'
         ]).copy()
 
+        # Step 1: Weighted CO2 = CO2 per capita * population
         forest_data['Weighted CO2'] = forest_data['CO2 Emissions (Tons/Capita)'] * forest_data['Population']
 
+        # Step 2: Group by Year & Country and aggregate
         forest_grouped = forest_data.groupby(['Year', 'Country']).agg({
-            'Forest Area (%)': 'max',
+            'Forest Area (%)': 'mean',               # avg forest cover if multiple entries
             'Weighted CO2': 'sum',
-            'Population': 'sum'
+            'Population': 'sum',
+            'Avg Temperature (°C)': 'mean'            # avg temp for bubble size
         }).reset_index()
 
+        # Step 3: Recalculate CO2 per capita after summing population and CO2
         forest_grouped['CO2 Emissions (Tons/Capita)'] = forest_grouped['Weighted CO2'] / forest_grouped['Population']
         forest_final = forest_grouped.drop(columns=['Weighted CO2'])
 
+        # Step 4: Plotly scatter plot
         forest_fig = px.scatter(
             forest_final,
             x="Forest Area (%)",
             y="CO2 Emissions (Tons/Capita)",
+            size="Avg Temperature (°C)",                      # Bubble size
             animation_frame="Year",
             animation_group="Country",
             hover_name="Country",
@@ -214,15 +195,17 @@ def run():
             range_y=[0, forest_final["CO2 Emissions (Tons/Capita)"].max() + 1],
             labels={
                 "Forest Area (%)": "Forest Cover (%)",
-                "CO2 Emissions (Tons/Capita)": "CO₂ per Capita"
+                "CO2 Emissions (Tons/Capita)": "CO₂ per Capita",
+                "Average Temperature": "Avg Temp (°C)"
             },
-            title="Forest Area vs CO₂ Emissions by Year",
+            title="Forest Area vs CO₂ Emissions by Year (Bubble = Avg Temp)",
             height=650
         )
+
         forest_fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
         forest_fig.layout.updatemenus[0].buttons[0].args[1]["transition"]["duration"] = 300
 
-        forest_fig.update_traces(marker=dict(size=12, opacity=0.75, line=dict(width=0.5, color='black')))
+        forest_fig.update_traces(marker=dict(opacity=0.75, line=dict(width=0.5, color='black')))
         forest_fig.update_layout(
             plot_bgcolor="#111111",
             paper_bgcolor="#111111",
